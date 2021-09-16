@@ -8,7 +8,30 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <p>testing</p>
+    <main>
+        <div class="input-wrapper">
+            <p>Principal loan amount</p>
+            <input id="principal-loan" type="text">
+        </div>
+    
+        <div class="input-wrapper">
+            <p>Interest rate</p>
+            <input id="interest-rate" type="text">
+            <span>%</span>
+        </div>
+    
+        <div class="input-wrapper">
+            <p>Length of loan</p>
+            <input id="loan-length" type="text">
+            <span>years</span>
+        </div>
+    
+        <button id="calculate-btn">Calculate</button>
+
+        <p id="mortgage-payment">Your monthly mortgage payment will be <span id="mortgage-amount"></span></p>
+    </main>
+
+
     <script src="index.js"></script>
 </body>
 </html>
