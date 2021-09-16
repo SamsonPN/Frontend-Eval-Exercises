@@ -9,15 +9,20 @@
 </head>
 <body>
     <div class="offer-wrapper">
-        <button id="offer-button">Show offer</button>
-        <p id="offer-accepted-msg">Offer accepted</p>
+        <button class="offer-button" data-offer="0">Show offer one</button>
+        <p class="offer-accepted-msg">Accepted offer one</p>
+    </div>
+
+    <div class="offer-wrapper">
+        <button class="offer-button" data-offer="1">Show offer two</button>
+        <p class="offer-accepted-msg">Accepted offer two</p>
     </div>
 
     <div id="modal">
         <div id="modal-menu">
             <button id="exit-modal-btn">X</button>
             <p>Click the button below to accept our amazing offer!</p>
-            <button id="accept-offer-btn" onclick="acceptOffer()">Accept offer</button>
+            <button id="accept-offer-btn"">Accept offer</button>
         </div>
     </div>
 

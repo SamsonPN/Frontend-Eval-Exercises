@@ -1,6 +1,9 @@
-const displayModal = () => {
+const displayModal = (e) => {
     const modal = document.getElementById('modal');
+    const accept_btn = document.getElementById('accept-offer-btn');
+
     modal.style.display = "flex";
+    accept_btn.dataset.offer = e.target.dataset.offer;
 }
 
 const dismissModal = () => {
@@ -8,24 +11,25 @@ const dismissModal = () => {
     modal.style.display = "none";
 }
 
-const acceptOffer = () => {
+const acceptOffer = (e) => {
     dismissModal();
 
-    const offer_btn = document.getElementById('offer-button');
-    const accept_msg = document.getElementById('offer-accepted-msg');
+    const { offer } = e.target.dataset;
+    const offer_btn = [...document.getElementsByClassName('offer-button')][offer];
+    const accept_msg = [...document.getElementsByClassName('offer-accepted-msg')][offer];
     
     offer_btn.style.display = "none";
     accept_msg.style.display = "block";
 }
 
 const main = () => {
-    const offer_btn = document.getElementById('offer-button');
-    const modal = document.getElementById('modal');
+    const offer_btns = [...document.getElementsByClassName('offer-button')];
     const accept_btn = document.getElementById('accept-offer-btn');
-    const exit_btn = document.getElementById('exit-modal-btn');
+    const modal = document.getElementById('modal');
     const modal_menu = document.getElementById('modal-menu');
-
-    offer_btn.addEventListener('click', displayModal)
+    const exit_btn = document.getElementById('exit-modal-btn');
+    
+    offer_btns.forEach((btn, i) => btn.addEventListener('click', displayModal));
 
     modal.addEventListener('click', dismissModal);
 
