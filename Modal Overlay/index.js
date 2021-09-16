@@ -29,9 +29,15 @@ const main = () => {
     const modal_menu = document.getElementById('modal-menu');
     const exit_btn = document.getElementById('exit-modal-btn');
     
-    offer_btns.forEach((btn, i) => btn.addEventListener('click', displayModal));
+    offer_btns.forEach(btn => btn.addEventListener('click', displayModal));
 
     modal.addEventListener('click', dismissModal);
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            dismissModal();
+        }
+    })
 
     accept_btn.addEventListener('click', acceptOffer);
 
