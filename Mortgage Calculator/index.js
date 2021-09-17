@@ -14,7 +14,10 @@ const hasValidInputs = () => {
 
 const calculateMortgage = () => {
     if (hasValidInputs()) {
-        const principal_loan = Number(document.getElementById('principal-loan').value);
+        const down_payment = Number(document.getElementById('down-payment').value);
+        const percent_total_loan = Number(document.getElementById('percent-total-loan').value) / 100;
+        const principal_loan = (down_payment / percent_total_loan) - down_payment;
+        // const principal_loan = Number(document.getElementById('principal-loan').value);
         const monthly_interest_rate = (Number(document.getElementById('interest-rate').value) / 100) / 12;
         const loan_length_monthly = Number(document.getElementById('loan-length').value) * 12;
 
