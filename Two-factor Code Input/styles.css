@@ -5,3 +5,40 @@
     margin: 0;
     font-family: Arial, Helvetica, sans-serif;
 }
+
+body {
+    min-height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#code-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-wrapper {
+    margin-bottom: 15px;
+}
+
+.input-wrapper input {
+    height: 7.5vh;
+    width: 5vw;
+    border: 1px solid black;
+    padding: 3.5px;
+    font-size: 32px;
+}
+
+.input-wrapper input:not(:last-child) {
+    margin-right: 7.5px;
+}
+
+#submit-btn {
+    width: 50%;
+    border: 0.5px solid rgba(0,0,0, 0.35);
+    padding: 2.5px 10px;
+    font-size: 18px;
+}
