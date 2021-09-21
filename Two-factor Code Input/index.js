@@ -25,7 +25,10 @@ const validateKey = (e) => {
 const resetFields = () => {
     const code_inputs = [...document.getElementsByTagName('input')];
 
-    code_inputs.forEach(input => input.value = "");
+    code_inputs.forEach(input => {
+        input.value = "";
+        input.style.border = '1px solid black';
+    });
 }
 
 const submitCode = (code) => {
@@ -45,18 +48,24 @@ const submissionHandler = (e) => {
     e.preventDefault();
     let code = '';
     const code_inputs = [...document.getElementsByTagName('input')];
+    let missingFields = false;
 
     for (let i = 0; i < code_inputs.length; i++) {
         let { value } = code_inputs[i];
-        if (value.length === '0') {
-            alert("Please fill out all fields!")
-            return;
+        if (value.length === 0) {
+            code_inputs[i].style.border = '3px dashed red';
+            missingFields = true;
         }
 
         code += value;
     }
 
-    submitCode(code);
+    if ( !missingFields ) {
+        submitCode(code);
+    }
+    else {
+        alert("Please fill all highlighted fields!")
+    }
 }
 
 const main = () => {
