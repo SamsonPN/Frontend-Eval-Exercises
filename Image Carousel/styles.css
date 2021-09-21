@@ -8,4 +8,40 @@
 body {
     min-height: 100vh;
     width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+    width: 50vw;
+}
+
+#image-carousel {
+    height: 100%;
+    width: 100%;
+}
+
+#carousel-overlay {
+    position: absolute;
+    height: 50vh; 
+    width: 50vw;
+    display: flex;
+    justify-content: space-between;
+    background-color: rgba(0, 0, 0, 0.1);
+    z-index: 1;
+}
+
+#carousel-overlay img {
+    height: 100%;
+    width: 10%;
+}
+
+#carousel-overlay img:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.5);
 }
