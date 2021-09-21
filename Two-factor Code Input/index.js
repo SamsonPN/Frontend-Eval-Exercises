@@ -24,11 +24,27 @@ const validateKey = (e) => {
 
 const resetFields = () => {
     const code_inputs = [...document.getElementsByTagName('input')];
-
+    
     code_inputs.forEach(input => {
         input.value = "";
         input.style.border = '1px solid black';
     });
+}
+
+const pasteCode = (code) => {
+    code = code.split("");
+    const inputs = [...document.getElementsByTagName('input')];
+
+    for (let i = 0 ; i < 4; i++) {
+        if (code[i].match(/[0-9]/)) {
+            inputs[i].value = code[i];
+        }
+        else {
+            alert("Please paste a numerical code only!");
+            resetFields();
+            return;
+        }
+    }
 }
 
 const submitCode = (code) => {
@@ -73,6 +89,17 @@ const main = () => {
     const code_form = document.getElementById('code-form');
 
     [...code_inputs].forEach(input => {
+
+        input.addEventListener('paste', (e) => {
+            if (e.target.name === '1') {
+                pasteCode(e.clipboardData.getData("text"));
+                e.preventDefault();
+            }
+            else {
+                alert("Copy/paste only works from the first field!")
+            }
+        })
+
         input.addEventListener('input', (e) => {
                 validateKey(e)
         })
