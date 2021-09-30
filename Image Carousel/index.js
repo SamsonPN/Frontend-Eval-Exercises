@@ -22,7 +22,12 @@ class Carousel {
 
     moveCarouselLeft() {
         this.resetImage();
-        this._index--;
+        if (this._index === 0 ) {
+            this._index = 0;
+        }
+        else {
+            this._index--;
+        }
         this.setImage();
         clearInterval(this._interval);
         this.rotateImage();
@@ -30,11 +35,17 @@ class Carousel {
     
     moveCarouselRight() {
         this.resetImage();
-        this._index++;
+        if (this._index === this._images.length - 1) {
+            this._index = 0;
+        }
+        else {
+            this._index++;
+        }
         this.setImage();
         clearInterval(this._interval);
         this.rotateImage();
     }
+
     get index() {
         return this._index;
     }
