@@ -17,8 +17,9 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 50vh;
-    width: 50vw;
+    height: 75vh;
+    width: 75vw;
+    background-color: black;
 }
 
 .image-carousel {
@@ -29,20 +30,37 @@ main {
 
 #carousel-overlay {
     position: absolute;
-    height: 50vh; 
-    width: 50vw;
+    height: 75vh; 
+    width: 75vw;
     display: flex;
     justify-content: space-between;
     background-color: rgba(0, 0, 0, 0.1);
     z-index: 1;
 }
 
-#carousel-overlay img {
+#carousel-overlay .carousel-arrows {
     height: 100%;
-    width: 10%;
+    width: 5%;
 }
 
-#carousel-overlay img:hover {
+#carousel-overlay .carousel-arrows:hover {
     cursor: pointer;
     background-color: rgba(0, 0, 0, 0.5);
+}
+
+#carousel-image-selector {
+    height: 10%;
+    display: flex;
+    align-self: flex-end;
+    justify-content: space-around;
+    margin-bottom: 2.5%;
+}
+
+.image-circle:not(:last-child) {
+    margin-right: 1px;
+}
+
+.image-circle:hover {
+    cursor: pointer;
+    opacity: 0.5;
 }
