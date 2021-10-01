@@ -1,7 +1,10 @@
 class Carousel {
     constructor() {
-        this._images = [...document.getElementsByClassName('image-carousel')];
-        this._selectors = null;
+        this._subreddit = "Maplestory";
+        this._query = "Day";
+        this._images = null;
+        this._selectors =  null;
+        this._num_images = 0;
         this._interval = null;
         this._index = 0;
     }
@@ -58,80 +61,103 @@ class Carousel {
         this.resetInterval();
     }
 
+    generateImgSelectors() {
+        const selector_container = document.getElementById('carousel-image-selector');
+        selector_container.innerHTML = "";
+        const fragment = new DocumentFragment();
+
+        for (let i = 0; i < this._num_images; i++) {
+            let img_selector = document.createElement('img');
+            img_selector.src = './assets/image-selector-unfilled.svg';
+            img_selector.classList.add('image-circle');
+    
+            img_selector.addEventListener('click', () => {
+                this.selectImage(i);
+            })
+            fragment.append(img_selector);
+        }
+    
+        selector_container.append(fragment);
+        this._selectors = [...document.getElementsByClassName('image-circle')];
+    }
+
+    preloadImages (images) {
+        // create fragment and preload images
+        const fragment = new DocumentFragment();
+        const image_carousel = document.getElementById('image-carousel-wrapper');
+        image_carousel.innerHTML = "";
+        let i = 0;
+        let num_images = 0;
+    
+        while ((i < images.length && i < 100) && fragment.childElementCount < 10) {
+            let image = images[i].data.url_overridden_by_dest;
+            if (image && (image.indexOf('.jpg') !== -1 || image.indexOf('.png') !== -1)) {
+                let img = document.createElement('img');
+                img.src = image;
+                img.classList.add('image-carousel');
+                img.alt = 'Image Carousel';
+                fragment.append(img);
+                num_images++;
+            }
+            i++;
+        }
+    
+        image_carousel.appendChild(fragment);
+
+        this._images = [...document.getElementsByClassName('image-carousel')];
+        this._num_images = num_images;
+    }
+    
+    async fetchImages() {
+        const url = `https://www.reddit.com/r/${this._subreddit}/top/.json?t=${this._query}`;
+        const fetch_images = await fetch(url);
+        const images = await fetch_images.json();
+    
+        return images;
+    }
+
+    async start() {
+        // fetch images and start carousel
+        const fetch_images = await this.fetchImages();
+        const images = fetch_images.data.children;
+
+        // preload images
+        this.preloadImages(images);
+        
+        // initiate and start the carousel
+        this.generateImgSelectors();
+        this.selectImage(0);
+    }
+
     // getters/setters
-    get index() {
-        return this._index;
+    get subreddit() {
+        return this._subreddit;
     }
 
-    set index(new_index) {
-        this._index = new_index;
+    set subreddit(new_sub) {
+        this._subreddit = new_sub;
+        return this._subreddit;
     }
 
-    get interval() {
-        return this._interval;
+    get query() {
+        return this._query;
     }
 
-    set interval(new_interval) {
-        this._interval = new_interval;
-    }
-
-    get selectors() {
-        return this._selectors;
-    }
-
-    set selectors(new_selectors) {
-        this._selectors = new_selectors;
+    set query(new_query) {
+        this._query = new_query;
+        return this._query
     }
 }
 
-const generateImgSelectors = (num_images, carousel) => {
-    const selector_container = document.getElementById('carousel-image-selector');
-    const fragment = new DocumentFragment();
-
-    for (let i = 0; i < num_images; i++) {
-        let img_selector = document.createElement('img');
-        img_selector.src = './assets/image-selector-unfilled.svg';
-        img_selector.classList.add('image-circle');
-
-        img_selector.addEventListener('click', () => {
-            carousel.selectImage(i);
-        })
-        fragment.append(img_selector);
-    }
-
-    selector_container.append(fragment);
-}
-
-const preloadImages = (images) => {
-    // create fragment and preload images
-    const fragment = new DocumentFragment();
-    const main = [...document.getElementsByTagName('main')][0];
-    images.forEach(image => {
-        let img = document.createElement('img');
-        img.src = image.download_url;
-        img.classList.add('image-carousel');
-        img.alt = 'Image Carousel';
-        fragment.append(img);
+const resetElementHighlights = (elements) => {
+    elements.forEach(element => {
+        element.classList.remove('highlighted');
     })
-
-    main.appendChild(fragment);
-
 }
 
 const main = async () => {
-    // fetch images and start carousel
-    const fetch_images = await fetch('https://picsum.photos/v2/list');
-    const images = await fetch_images.json();
-
-    // preload images
-    preloadImages(images);
-    
-    // initiate and start the carousel
     const carousel = new Carousel();
-    generateImgSelectors(images.length, carousel);
-    carousel.selectors = [...document.getElementsByClassName('image-circle')];
-    carousel.displayImage();
-    carousel.rotateImage();
+    carousel.start();
 
     // add event listeners to left/right arrows
     const left_arrow = document.getElementById('carousel-left-arrow');
@@ -139,6 +165,28 @@ const main = async () => {
 
     left_arrow.addEventListener('click', () => carousel.moveCarouselLeft())
     right_arrow.addEventListener('click', () => carousel.moveCarouselRight());
+
+    // add event listeners to subreddit buttons
+    const subreddit_btns = [...document.getElementsByClassName('subreddit-btn')];
+    const subreddit_queries = [...document.getElementsByClassName('subreddit-query')];
+
+    subreddit_btns.forEach(btn => {
+        btn.addEventListener('click', async () => {
+            resetElementHighlights(subreddit_btns);
+            btn.classList.add('highlighted');
+            carousel.subreddit = btn.textContent;
+            carousel.start();
+        })
+    })
+
+    subreddit_queries.forEach(query => {
+        query.addEventListener('click', () => {
+            resetElementHighlights(subreddit_queries);
+            query.classList.add('highlighted');
+            carousel.query = query.textContent.toLowerCase();
+            carousel.start();
+        })
+    })
 }
 
 main();
