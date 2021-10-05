@@ -6,16 +6,17 @@ class Carousel {
         this._selectors =  null;
         this._num_images = 0;
         this._interval = null;
+        this._animation = 'fade-in';
         this._index = 0;
     }
 
     displayImage() {
-        this._images[this._index].style.display = 'block';
+        this._images[this._index].classList.add(this._animation);
         this._selectors[this._index].src = './assets/image-selector-filled.svg';
     }
 
     resetImage() {
-        this._images[this._index].style.display = 'none';
+        this._images[this._index].classList.remove(this._animation);
         this._selectors[this._index].src = './assets/image-selector-unfilled.svg';
     }
 
@@ -34,12 +35,11 @@ class Carousel {
     moveCarouselLeft() {
         this.resetImage();
         if (this._index === 0 ) {
-            this._index = 0;
+            this._index = this._images.length - 1;
         }
         else {
             this._index--;
         }
-
         this.resetInterval();
     }
     
@@ -51,7 +51,6 @@ class Carousel {
         else {
             this._index++;
         }
-
         this.resetInterval();
     }
 
@@ -147,6 +146,15 @@ class Carousel {
         this._query = new_query;
         return this._query
     }
+
+    get animation() {
+        return this._animation;
+    }
+
+    set animation(new_animation) {
+        this._animation = new_animation;
+        return this._animation;
+    }
 }
 
 const resetElementHighlights = (elements) => {
@@ -185,6 +193,17 @@ const main = async () => {
             query.classList.add('highlighted');
             carousel.query = query.textContent.toLowerCase();
             carousel.start();
+        })
+    })
+
+    // add event listeners to animation btns
+    const animation_btns = [...document.getElementsByClassName('animation-btn')];
+
+    animation_btns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            resetElementHighlights(animation_btns);
+            btn.classList.add('highlighted');
+            carousel.animation = btn.dataset.animation;
         })
     })
 }

@@ -59,9 +59,10 @@ main {
 }
 
 .image-carousel {
-    display: none;
     height: 100%;
-    width: 100%;
+    width: 0%;
+    opacity: 0;
+    transition opacity 1s;
 }
 
 #carousel-overlay {
@@ -104,4 +105,16 @@ main {
 .image-circle:hover {
     cursor: pointer;
     opacity: 0.5;
+}
+
+/* Transitions */
+.fade-in {
+    transition: opacity 1.5s;
+    width: 100%;
+    opacity: 1;
+}
+
+.slide-in {
+    transition: 1s;
+    width: 100%;
 }
