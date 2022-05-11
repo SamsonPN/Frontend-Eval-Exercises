@@ -4,6 +4,7 @@ class Timer {
     #minutes;
     #hours;
     #paused;
+    #popupMsg;
     
     constructor() {
         this.#countdown = null;
@@ -11,6 +12,19 @@ class Timer {
         this.#minutes = 0;
         this.#hours = 0;
         this.#paused = false;
+        this.#popupMsg = "Timer is finished!";
+    }
+
+    setPopupMsg() {
+        const setPopup = confirm("Would you like to set a custom message when the timer is finished?");
+
+        if (setPopup) {
+            const msg = prompt("Enter a message to be displayed when the timer is finished: ");
+            this.#popupMsg = msg;
+        }
+        else {
+            this.#popupMsg = "Timer is finished!";
+        }
     }
     
     /**
@@ -55,7 +69,6 @@ class Timer {
                 break;
         }
     }
-
 
     /**
      * Validates whether timer input values are numbers
@@ -115,6 +128,7 @@ class Timer {
                 })
             }
 
+            this.setPopupMsg();
             this.displayCountdown(true);
             this.displayButtons(false, true, true);
             this.updateBrowserTitle();
@@ -169,7 +183,7 @@ class Timer {
 
         // once timer is done, notify user and reset timer
         if (this.#seconds === 0 && this.#minutes === 0 && this.#hours === 0) {
-            alert("Timer is finished!");
+            alert(this.#popupMsg);
             this.reset();
         }
 
