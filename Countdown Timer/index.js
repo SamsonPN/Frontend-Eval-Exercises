@@ -117,8 +117,8 @@ class Timer {
 
             this.displayCountdown(true);
             this.displayButtons(false, true, true);
-            
-        
+            this.updateBrowserTitle();
+
             // start the timer
             this.#countdown = setInterval(() => this.countdownHandler(), 1000);
         }
@@ -135,7 +135,7 @@ class Timer {
         const secondDisplay = timeDisplay[2];
         const minuteDisplay = timeDisplay[1];
         const hourDisplay = timeDisplay[0];
-
+                
         // decrement seconds
         if (this.#seconds === 0 && (this.#minutes >= 0 && this.#hours > 0)) {
             this.#seconds = 59;
@@ -163,12 +163,27 @@ class Timer {
             hourDisplay.textContent = this.#hours > 9 ? this.#hours : `0${this.#hours}`;
         }
 
+        // update the browser title with timer
+        // document.title = `Timer: ${hourDisplay.textContent} : ${minuteDisplay.textContent} : ${secondDisplay.textContent}`;
+        this.updateBrowserTitle();
+
         // once timer is done, notify user and reset timer
         if (this.#seconds === 0 && this.#minutes === 0 && this.#hours === 0) {
             alert("Timer is finished!");
             this.reset();
         }
 
+    }
+
+    /**
+     * Updates the browser title with timer
+     */
+    updateBrowserTitle() {
+        let hours = this.#hours > 9 ? this.#hours : `0${this.#hours}`;
+        let minutes = this.#minutes > 9 ? this.#minutes : `0${this.#minutes}`;
+        let seconds = this.#seconds > 9 ? this.#seconds : `0${this.#seconds}`;
+
+        document.title = `Timer: ${hours} : ${minutes} : ${seconds}`;
     }
     
     /**
@@ -193,6 +208,7 @@ class Timer {
         this.displayCountdown(false);
         this.displayButtons(true, false, false);
 
+        document.title = 'Countdown Timer';
         [...document.getElementsByClassName('time-input')].forEach(input => input.value = "");
     }
 }
