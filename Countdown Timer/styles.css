@@ -29,20 +29,22 @@ h1 {
     font-size: 3em;
 }
 
-#timer-wrapper {
+.timer {
     display: flex;
+    align-items: center;
+    margin-bottom: 2vh;
 }
 
-#time-input-wrapper {
+.time-input-wrapper {
     display: flex;
     align-items: center;
 }
 
-#time-input-wrapper span, #time-text-wrapper span {
+.time-input-wrapper span, .time-text-wrapper span {
     margin: 0 0.75vw;
 }
 
-.time-input[type="text"], #time-text-wrapper p{
+.time-input[type="text"], .time-text-wrapper p{
     height: 5vh;
     width: 5vw;
     display: flex;
@@ -54,19 +56,19 @@ h1 {
     font-size: 1.5em;
 }
 
-#time-input-wrapper span, 
+.time-input-wrapper span, 
 .time-input, 
-#time-text-wrapper span, 
+.time-text-wrapper span, 
 .time-btn{
     font-size: 1.5em;
 }
 
-#time-text-wrapper {
+.time-text-wrapper {
     display: none;
     align-items: center;
 }
 
-#time-btn-wrapper {
+.time-btn-wrapper {
     margin-left: 1vw;
 }
 
@@ -87,18 +89,52 @@ h1 {
     cursor: pointer;
 }
 
-#startBtn { 
+.time-btn[name="startBtn"] { 
     background-color: green;
 }
 
-#pauseBtn { 
+.time-btn[name="pauseBtn"] { 
     display: none;
     background-color: red; 
 }
 
-#resetBtn { 
+.time-btn[name="resetBtn"] { 
     display:none;
-    background-color: blue; 
+    background-color: blue;
+    margin-left: 1vw; 
+}
+
+.delete-btn{
+    height: 4.5vh;
+    min-width: 4.5vh;
+    margin-right: 1vw;
+    border: 2px solid black;
+    border-radius: 50%;
+    background-color: red;
+    color: white;
+}
+
+.delete-btn:hover {
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+#add-timer-btn {
+    height: 5vh;
+    min-width: 10vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid black;
+    border-radius: 10px;
+    font-size: 1.25em;
+    background-color: purple;
+    color: white;
+}
+
+#add-timer-btn:hover {
+    opacity: 0.75;
+    cursor: pointer;
 }
 
 

@@ -1,3 +1,6 @@
+/**
+ * Timer class that can Start, Reset, and Pause
+ */
 class Timer {
     #countdown;
     #seconds;
@@ -5,6 +8,7 @@ class Timer {
     #hours;
     #paused;
     #popupMsg;
+    #references;
     
     constructor() {
         this.#countdown = null;
@@ -13,8 +17,20 @@ class Timer {
         this.#hours = 0;
         this.#paused = false;
         this.#popupMsg = "Timer is finished!";
+        this.#references = {};
     }
 
+    /**
+     * Sets the references to timers' elements
+     * @param {Object} references - object with references to timers' elements 
+     */
+    setReferences(references) {
+        this.#references = references;
+    }
+
+    /**
+     * Sets up popup message when timer is done
+     */
     setPopupMsg() {
         const setPopup = confirm("Would you like to set a custom message when the timer is finished?");
 
@@ -32,9 +48,8 @@ class Timer {
      * @param {boolean} shouldDisplay - Decides whether to display inputs or textboxes
      */
     displayCountdown(shouldDisplay) {
-        // replace input field with text field
-        document.getElementById("time-input-wrapper").style.display = shouldDisplay ? "none" : "flex";
-        document.getElementById("time-text-wrapper").style.display = shouldDisplay ? "flex" : "none";
+        this.#references["time-input-wrapper"].style.display = shouldDisplay ? "none" : "flex";
+        this.#references["time-text-wrapper"].style.display = shouldDisplay ? "flex" : "none";
         
     }
     
@@ -45,10 +60,9 @@ class Timer {
      * @param {boolean} displayReset - Displays reset button
      */
     displayButtons(displayStart, displayPause, displayReset) {    
-        // replace Start with Pause and Reset buttons
-        document.getElementById("startBtn").style.display = displayStart ? "inline-flex" : "none";
-        document.getElementById("pauseBtn").style.display = displayPause ? "inline-flex" : "none";
-        document.getElementById("resetBtn").style.display = displayReset ? "inline-flex" : "none";
+        this.#references["time-btns"][0].style.display = displayStart ? "inline-flex" : "none";
+        this.#references["time-btns"][1].style.display = displayPause ? "inline-flex" : "none";
+        this.#references["time-btns"][2].style.display = displayReset ? "inline-flex" : "none";
     }
 
     /**
@@ -104,31 +118,23 @@ class Timer {
         return true;
     }
     
-    
     /**
      * Starts timer, replaces inputs with plain text
      * and replaces Start button with Pause and Reset buttons
      */
     start() {
-        // validate input here
-        // numbers only
-        // hours: 0 --> 24
-        // minutes/seconds: 0 --> 59
-        const timeInputs = [...document.getElementsByClassName("time-input")];
-
+        const timeInputs = this.#references["time-inputs"];
         if (this.validInput(timeInputs)) {
-
             if (!this.#paused) {
-                // grab input values and place them in timer/text fields
-                const timeText = [...document.getElementsByClassName("time-text")];
+                this.setPopupMsg();
+                const timeText = this.#references["time-texts"];
                 timeInputs.forEach((input, index) => {
                     let time = Number(input.value);
                     timeText[index].textContent = time > 9 ? time : `0${time}`;
-                    this.setTimes(timeText[index].id, time);
+                    this.setTimes(timeText[index].classList[1], time);
                 })
             }
 
-            this.setPopupMsg();
             this.displayCountdown(true);
             this.displayButtons(false, true, true);
             this.updateBrowserTitle();
@@ -145,7 +151,7 @@ class Timer {
      * Function that handles the timer counting down
      */
     countdownHandler() {
-        const timeDisplay = [...document.getElementsByClassName('time-text')];
+        const timeDisplay = this.#references["time-texts"];
         const secondDisplay = timeDisplay[2];
         const minuteDisplay = timeDisplay[1];
         const hourDisplay = timeDisplay[0];
@@ -183,8 +189,8 @@ class Timer {
 
         // once timer is done, notify user and reset timer
         if (this.#seconds === 0 && this.#minutes === 0 && this.#hours === 0) {
-            alert(this.#popupMsg);
             this.reset();
+            alert(this.#popupMsg);
         }
 
     }
@@ -223,23 +229,190 @@ class Timer {
         this.displayButtons(true, false, false);
 
         document.title = 'Countdown Timer';
-        [...document.getElementsByClassName('time-input')].forEach(input => input.value = "");
+        this.#references["time-inputs"].forEach(input => input.value = "");
+    }
+
+    /**
+     * Deletes the timer from the page
+     */
+    deleteTimer() {
+        document.getElementById("timer-wrapper").removeChild(this.#references["timer"]);
     }
 }
 
+/**
+ * Creates a span with a colon in it to separate time inputs/time texts
+ * @returns {HTMLElement} - returns a span with a colon in it
+ */
+const createColon = () => {
+    const colon = document.createElement("span");
+    colon.textContent = ":";
+    return colon;
+}
 
 /**
- * Attaches event listeners to buttons
+ * Creates input elements to get time values from user
+ * @param {Array} timeUnits - array of units of time (hours, minutes, seconds) 
+ * @returns {HTMLElement} - wrapper of all inputs that take in timer values
+ */
+const createTimeInputs = (timeUnits) => {
+    const inputWrapper = document.createElement("div");
+    inputWrapper.classList.add("time-input-wrapper");
+    
+    const placeholders = {
+        "hours": "HH",
+        "minutes": "MM",
+        "seconds": "SS"
+    };
+
+    timeUnits.forEach(unit => {
+        const label = document.createElement("label");
+        label.setAttribute("for", unit);
+
+        const input = document.createElement("input");
+        input.classList.add("time-input");
+        input.setAttribute("name", unit);
+        input.setAttribute("type", "text");
+        input.setAttribute("placeholder", placeholders[unit]);
+        input.setAttribute("maxlength", "2");
+
+        inputWrapper.append(label, input);
+
+        if (unit !== "seconds") {
+            const colon = createColon();
+            inputWrapper.append(colon);
+        }
+    })
+
+    return inputWrapper;
+}
+
+/**
+ * Creates paragraph elements to display the timer values
+ * @param {Array} timeUnits - array of units of time (hours, minutes, seconds)
+ * @returns {HTMLElement} - wrapper of all texts that display the time
+ */
+const createTimeTexts = (timeUnits) => {
+    const textWrapper = document.createElement("div");
+    textWrapper.classList.add("time-text-wrapper");
+
+    timeUnits.forEach(unit => {
+        const text = document.createElement("p");
+        text.classList.add("time-text", unit);
+        textWrapper.append(text);
+
+        if (unit !== "seconds") {
+            const colon = createColon();
+            textWrapper.append(colon);
+        }
+    })
+
+    return textWrapper;
+}
+
+/**
+ * Creates the timer buttons to control the timer
+ * @param   {Class} timer
+ * @returns {HTMLElement} - wrapper of all timer buttons
+ */
+const createTimeButtons = (timer) => {
+    const buttonWrapper = document.createElement("div");
+    buttonWrapper.classList.add("time-btn-wrapper");
+    const types = ["Start", "Pause", "Reset"];
+
+    types.forEach(type => {
+        const button = document.createElement("button");
+        button.classList.add("time-btn");
+        button.setAttribute("name", `${type.toLowerCase()}Btn`);
+        button.setAttribute("type", "button");
+        button.textContent = type;
+        button.addEventListener("click", () => {
+            switch(type) {
+                case "Start":
+                    timer.start();
+                    break;
+                case "Pause":
+                    timer.pause();
+                    break;
+                case "Reset":
+                    timer.reset();
+                    break;
+
+            }
+        })
+        buttonWrapper.append(button);
+    })
+
+    return buttonWrapper;
+}
+
+/**
+ * Creates timer delete button
+ * @returns {HTMLElement} - the delete button
+ */
+const createDeleteBtn = () => {
+    const deleteBtn = document.createElement("button");
+    deleteBtn.classList.add("delete-btn");
+    deleteBtn.setAttribute("type", "button");
+    deleteBtn.textContent = "X";
+
+    return deleteBtn;
+}
+
+/**
+ * Creates all the elements for the timer
+ */
+const createTimer = () => {
+    const timer = new Timer();
+    const timerFragment = new DocumentFragment();
+    const timeUnits = ["hours", "minutes", "seconds"];
+
+    const timerElements = document.createElement("div");
+    timerElements.classList.add("timer");
+
+    // create and append time inputs
+    const timeInputs = createTimeInputs(timeUnits);
+
+    // create and append time texts
+    const timeTexts = createTimeTexts(timeUnits);
+
+    // create and append time buttons
+    const timeBtns = createTimeButtons(timer);
+
+    // add in the delete button if it's the first
+    const deleteBtn = createDeleteBtn();
+    deleteBtn.addEventListener("click", () => timer.deleteTimer());
+    timerElements.append(deleteBtn);
+
+    // append created elements into timerWrapper
+    timerElements.append(timeInputs, timeTexts, timeBtns);
+
+    // append timerWrapper into timer
+    timerFragment.append(timerElements);
+
+    // append timer to #timer-app
+    document.getElementById("timer-wrapper").append(timerFragment);
+
+    // add references of these elements to Timer class
+    timer.setReferences({
+        "timer": timerElements,
+        "time-input-wrapper": timeInputs,
+        "time-inputs": [...timeInputs.children].filter((el) => el.tagName === "INPUT"),
+        "time-text-wrapper": timeTexts,
+        "time-texts": [...timeTexts.children].filter((el) => el.tagName === "P"),
+        "time-btn-wrapper": timeBtns,
+        "time-btns": [...timeBtns.children].filter((el) => el.tagName === "BUTTON")
+    });
+}
+
+/**
+ * Initializes app with a timer and attaches event listener to Add Timer button
  */
 const main = () => {
-    const timer = new Timer();
-    const startBtn = document.getElementById("startBtn");
-    const pauseBtn = document.getElementById("pauseBtn");
-    const resetBtn = document.getElementById("resetBtn");
+    createTimer();
+    const addTimer = document.getElementById("add-timer-btn");
 
-    startBtn.addEventListener('click', () => timer.start());
-    pauseBtn.addEventListener('click', () => timer.pause());
-    resetBtn.addEventListener('click', () => timer.reset());
+    addTimer.addEventListener("click", () => createTimer());
 }
 
 main();

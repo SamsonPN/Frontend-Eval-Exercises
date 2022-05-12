@@ -10,50 +10,8 @@
 <body>
     <div id="timer-app">
         <h1>Countdown Timer</h1>
-        <div id="timer-wrapper">
-            <!-- Enter in amounts for timer -->
-            <div id="time-input-wrapper">
-                <label for="hours"></label>
-                <input 
-                    class="time-input" 
-                    name="hours"
-                    type="text" 
-                    placeholder="HH"
-                    maxlength="2"> 
-                <span>:</span>
-                <label for="minutes"></label>
-                <input 
-                class="time-input" 
-                name="minutes"
-                type="text" 
-                placeholder="MM"
-                maxlength="2">
-                <span>:</span>
-                <label for="seconds"></label>
-                <input 
-                class="time-input" 
-                name="seconds"
-                type="text" 
-                placeholder="SS"
-                maxlength="2">
-            </div>
-            
-            <!-- Displays the countdown -->
-            <div id="time-text-wrapper">
-                <p id="hours" class="time-text"></p>
-                <span>:</span>
-                <p id="minutes" class="time-text"></p>
-                <span>:</span>
-                <p id="seconds" class="time-text"></p>
-            </div>
-            
-            <!-- Buttons to control timer -->
-            <div id="time-btn-wrapper">
-                <button id="startBtn" class="time-btn" type="button">Start</button>
-                <button id="pauseBtn" class="time-btn" type="button">Pause</button>
-                <button id="resetBtn" class="time-btn" type="button">Reset</button>
-            </div>
-        </div>
+        <div id="timer-wrapper"></div>
+        <button id="add-timer-btn" type="button">Add Timer</button>
     </div>
     <script src="index.js"></script>
 </body>
