@@ -1,0 +1,48 @@
+.timer {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2vh;
+}
+
+.time-input-wrapper, .time-text-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.time-input-wrapper span, .time-text-wrapper span {
+    margin: 0 0.75vw;
+}
+
+.time-input[type="text"], .time-text-wrapper p {
+    height: 5vh;
+    width: 5vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid black;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 1.5em;
+}
+
+.time-input-wrapper span, 
+.time-input, 
+.time-text-wrapper span, 
+.time-btn{
+    font-size: 1.5em;
+}
+
+.delete-btn{
+    height: 4.5vh;
+    min-width: 4.5vh;
+    margin-right: 1vw;
+    border: 2px solid black;
+    border-radius: 50%;
+    background-color: red;
+    color: white;
+}
+
+.delete-btn:hover {
+    opacity: 0.5;
+    cursor: pointer;
+}

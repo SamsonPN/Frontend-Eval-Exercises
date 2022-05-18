@@ -1,0 +1,48 @@
+.time-btn-wrapper {
+    margin-left: 1vw;
+}
+
+.time-btn {
+    height: 5vh;
+    min-width: 7vw;
+    padding: 5px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid black;
+    border-radius: 10px;
+    color: white;
+}
+
+.time-btn:hover {
+    opacity: 0.75;
+    cursor: pointer;
+}
+
+.time-btn[name="start"] { 
+    background-color: green;
+}
+
+.time-btn[name="pause"] { 
+    background-color: red; 
+}
+
+.time-btn[name="reset"] { 
+    background-color: blue;
+    margin-left: 1vw; 
+}
+
+.delete-btn{
+    height: 4.5vh;
+    min-width: 4.5vh;
+    margin-right: 1vw;
+    border: 2px solid black;
+    border-radius: 50%;
+    background-color: red;
+    color: white;
+}
+
+.delete-btn:hover {
+    opacity: 0.5;
+    cursor: pointer;
+}
