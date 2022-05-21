@@ -112,6 +112,8 @@ class FAQ extends HTMLElement {
         faqContainer.classList.add("faq-container");
         
         data.forEach((item, i) => {
+            const {question, answer, open} = item;
+
             // create the question/answer item
             const qaItem = document.createElement("div");
             qaItem.classList.add("qa-item");
@@ -122,33 +124,30 @@ class FAQ extends HTMLElement {
 
             // arrow image next to question/answer
             const arrow = document.createElement("img");
-            arrow.src = i === 0 ? "./assets/down-arrow.svg" : "./assets/right-arrow.svg";
+            arrow.src = open ? "./assets/down-arrow.svg" : "./assets/right-arrow.svg";
             imgWrapper.append(arrow);
             
             // wrapper around question/answer paragraphs
             const qaWrapper = document.createElement("div");
             qaWrapper.classList.add("qa-wrapper");
 
-            const question = document.createElement("p");
-            question.classList.add("question");
-            question.textContent = item.question;
+            const questionEl = document.createElement("p");
+            questionEl.classList.add("question");
+            questionEl.textContent = question;
             
-            const answer = document.createElement("p");
-            answer.classList.add("answer");
-            answer.textContent = item.answer;
-            // first q/a item displays the answer
-            if (i === 0) {
-                answer.style.display = "block";
-            }
+            const answerEl = document.createElement("p");
+            answerEl.classList.add("answer");
+            answerEl.textContent = answer;
+            answerEl.style.display = open ? "block" : "none";
             
-            qaWrapper.append(question, answer);
+            qaWrapper.append(questionEl, answerEl);
 
             qaItem.append(imgWrapper, qaWrapper);   
             
             // event listener to toggle answer/arrow
             qaItem.onclick = () => {
-                this.displayAnswer(answer);
-                this.toggleArrow(arrow, answer.style.display);
+                this.displayAnswer(answerEl);
+                this.toggleArrow(arrow, answerEl.style.display);
             }
 
             faqContainer.append(qaItem); 
