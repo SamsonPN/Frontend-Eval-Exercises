@@ -24,7 +24,7 @@ sheets.replaceSync(`
         width: 50vw;
         display: flex;
         align-items: flex-start;
-        padding: 7.5%;
+        padding: 5%;
         border: 1px solid black;
         margin-bottom: 2.5vw;
     }
@@ -52,13 +52,13 @@ sheets.replaceSync(`
 
     .question {
         font-size: 1.5rem;
-        margin-bottom: 0.5vh;
+        margin-bottom: 1vh;
     }
 
     .answer {
-        display: none;
         font-size: 1.5rem;
         color: gray;
+        transition: opacity 100ms ease-in;
     }
 `);
 
@@ -98,12 +98,13 @@ class FAQ extends HTMLElement {
     }
 
     displayAnswer(answer) {
-        const isDisplayed = answer.style.display === "block";
-        answer.style.display = isDisplayed ? "none" : "block";
+        const isDisplayed = answer.style.height === "auto";
+        answer.style.height = isDisplayed ? "0" : "auto";
+        answer.style.opacity = isDisplayed ? "0" : "1";
     }
 
-    toggleArrow(arrow, display) {
-        arrow.src = display === "block" ? "./assets/down-arrow.svg" : "./assets/right-arrow.svg";
+    toggleArrow(arrow, isDisplayed) {
+        arrow.src = isDisplayed ? "./assets/down-arrow.svg" : "./assets/right-arrow.svg";
     }
 
 
@@ -111,7 +112,7 @@ class FAQ extends HTMLElement {
         const faqContainer = document.createElement("div");
         faqContainer.classList.add("faq-container");
         
-        data.forEach((item, i) => {
+        data.forEach(item => {
             const {question, answer, open} = item;
 
             // create the question/answer item
@@ -131,14 +132,17 @@ class FAQ extends HTMLElement {
             const qaWrapper = document.createElement("div");
             qaWrapper.classList.add("qa-wrapper");
 
+            // question element
             const questionEl = document.createElement("p");
             questionEl.classList.add("question");
             questionEl.textContent = question;
             
+            // answer element
             const answerEl = document.createElement("p");
             answerEl.classList.add("answer");
             answerEl.textContent = answer;
-            answerEl.style.display = open ? "block" : "none";
+            answerEl.style.height = open ? "auto" : "0";
+            answerEl.style.opacity = open ? "1" : "0";
             
             qaWrapper.append(questionEl, answerEl);
 
@@ -147,7 +151,7 @@ class FAQ extends HTMLElement {
             // event listener to toggle answer/arrow
             qaItem.onclick = () => {
                 this.displayAnswer(answerEl);
-                this.toggleArrow(arrow, answerEl.style.display);
+                this.toggleArrow(arrow, answerEl.style.height === "auto");
             }
 
             faqContainer.append(qaItem); 
