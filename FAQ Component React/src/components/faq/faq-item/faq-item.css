@@ -1,0 +1,50 @@
+.qa-item {
+    width: 50vw;
+    display: flex;
+    align-items: flex-start;
+    padding: 5%;
+    border: 1px solid black;
+    margin-bottom: 2.5vw;
+}
+
+.qa-item:hover {
+    opacity: 0.75;
+    cursor: pointer;
+}
+
+.qa-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.img-wrapper {
+    display: flex;
+    align-items: center;
+    margin-right: 1vw;
+}
+
+img {
+    width: 1.5rem;
+    margin-top: 5px;
+}
+
+.question {
+    font-size: 1.5rem;
+    margin-bottom: 1vh;
+}
+
+.answer {
+    font-size: 1.5rem;
+    color: gray;
+    transition: opacity 100ms ease-in;
+}
+
+.display {
+    height: auto;
+    opacity: 1;
+}
+
+.hide {
+    height: 0;
+    opacity: 0;
+}

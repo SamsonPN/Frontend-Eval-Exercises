@@ -1,0 +1,11 @@
+.faq {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10%;
+}
+
+h1 {
+    margin-bottom: 2.5vw;
+}

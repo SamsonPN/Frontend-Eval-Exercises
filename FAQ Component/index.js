@@ -8,6 +8,7 @@ sheets.replaceSync(`
         box-sizing: border-box;
         font-family: Arial, Helvetica, sans-serif;
     }
+    
     .faq {
         display: flex;
         flex-direction: column;
