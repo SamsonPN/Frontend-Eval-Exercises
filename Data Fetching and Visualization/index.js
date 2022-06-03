@@ -1,8 +1,10 @@
 class Chart {
-    constructor(occ) {
+    constructor(occ, maxNum) {
         this.occurrences = occ;
-        this.heightOffset = 10;
-        this.width = `${Math.floor( (document.body.clientWidth / 2) / (Object.keys(this.occurrences).length + 1))}px`;
+        this.maxNum = maxNum;
+        this.maxFreq = Math.max(...Object.values(occ));
+        this.maxHeight = 100;
+        this.width = `${Math.floor( (document.body.clientWidth / 2) / (Object.keys(occ).length))}px`;
     }
 
     /**
@@ -12,15 +14,15 @@ class Chart {
         const barContainer = document.createElement("div");
         barContainer.classList.add("bar-container");
     
-        for(let occ in this.occurrences) {
+        Object.values(this.occurrences).forEach(occ => {
             const bar = document.createElement("div");
             bar.classList.add("bar");
-            bar.style.height = `${this.occurrences[occ] * this.heightOffset}px`;
+            bar.style.height = `${100 * (occ / this.maxFreq)}%`;
             bar.style.width = this.width;
 
             barContainer.append(bar);
-        }
-    
+        });
+
         return barContainer;
     }
 
@@ -28,10 +30,23 @@ class Chart {
      * Creates the x-axis for the chart
      */
     createXAxis() {
-        const axes = Object.keys(this.occurrences);
         const xAxis = document.createElement("div");
         xAxis.classList.add("x-axis");
+        
+        let axes = [];
+        console.log({m: this.maxNum, g: this.maxNum > 30})
+        if (this.maxNum > 30) {
+            const offset = Math.floor(this.maxNum / 10);
+            for (let i = 0; i < this.maxNum + offset; i += offset) {
+                axes.push(i);
+            }
+        }
+        else {
+            axes = Object.keys(this.occurrences);
+        }
+
         axes.forEach(val => {
+            console.log({val, v: typeof val})
             const axis = document.createElement("p");
             axis.classList.add("x-axis-value");
             axis.style.width = this.width;
@@ -51,10 +66,8 @@ class Chart {
         const yAxis = document.createElement("div");
         yAxis.classList.add("y-axis");
 
-        const max = Math.max(...Object.values(this.occurrences));
-        const offset = Math.ceil(max / 10);
-
-        for (let i = 0; i <= max + offset; i += offset) {
+        const offset = Math.ceil(this.maxFreq / 10);
+        for (let i = 0; i <= this.maxFreq; i += offset) {
             const axis = document.createElement("p");
             axis.classList.add("y-axis-value");
             axis.style.textAlign = "center";
@@ -94,7 +107,7 @@ const main = async () => {
 
     const fetchData = await fetch(endpoint);
     const data = (await fetchData.text()).split('\n');
-    const occurrences = {};
+    let occurrences = {};
     data.forEach(num => {
         if (num !== "") {
             if (num !== "" && occurrences[num] === undefined) occurrences[num] = 0;
@@ -102,7 +115,8 @@ const main = async () => {
         }
     })
 
-    const charts = new Chart(occurrences);
+    const max = Number(endpoint.split("max=")[1].split("&")[0]);
+    const charts = new Chart(occurrences, max);
     charts.createChart();
 }
 

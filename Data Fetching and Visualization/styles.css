@@ -15,7 +15,7 @@
 }
 
 .chart {
-    width: 75vw;
+    width: 95vw;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
@@ -52,6 +52,10 @@
     flex-direction: column-reverse;
     justify-content: space-between;
     margin-right: 1vw;
+}
+
+.y-axis-value {
+    margin-bottom: 10px;
 }
 
 .bar {
