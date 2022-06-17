@@ -8,7 +8,22 @@ class Chart {
     }
 
     /**
+     * Generates random color for bars in bar chart
+     * @returns {String} - Random color
+     */
+    generateBarColor() {
+        let color = "#";
+        for (let i = 0; i < 6; i++) {
+            let random = Math.floor(Math.random() * 16);
+            let hexValue = random.toString(16);
+            color = color.concat(hexValue);
+        }
+        return color;
+    }
+
+    /**
      * Creates the bars for the chart
+     * @returns {HTMLELement} - Container with bar elements
      */
     createBars() {
         const barContainer = document.createElement("div");
@@ -19,6 +34,7 @@ class Chart {
             bar.classList.add("bar");
             bar.style.height = `${100 * (occ / this.maxFreq)}%`;
             bar.style.width = this.width;
+            bar.style.backgroundColor = this.generateBarColor();
 
             barContainer.append(bar);
         });
@@ -34,7 +50,6 @@ class Chart {
         xAxis.classList.add("x-axis");
         
         let axes = [];
-        console.log({m: this.maxNum, g: this.maxNum > 30})
         if (this.maxNum > 30) {
             const offset = Math.floor(this.maxNum / 10);
             for (let i = 0; i < this.maxNum + offset; i += offset) {
@@ -46,7 +61,6 @@ class Chart {
         }
 
         axes.forEach(val => {
-            console.log({val, v: typeof val})
             const axis = document.createElement("p");
             axis.classList.add("x-axis-value");
             axis.style.width = this.width;
