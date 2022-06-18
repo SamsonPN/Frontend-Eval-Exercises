@@ -3,6 +3,7 @@
     padding: 0;
     border: 0;
     box-sizing: border-box;
+    font-family:Arial, Helvetica, sans-serif;
 }
 
 #app {
@@ -51,6 +52,33 @@ main {
     padding: 1px 1vw;
 }
 
+.bar-wrapper {
+    position: relative;
+    height: 100%;
+    min-height: 100%;
+    display:flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.bar-label {
+    display: none;
+    margin-bottom: 1vh;
+    padding: 5px;
+    font-size: 0.75em;
+    background-color: black;
+    color: white;
+    opacity: 0.9;
+}
+
+.bar-wrapper:hover {
+    opacity: 0.75;
+}
+
+.bar-wrapper:hover > .bar-label {
+    display: block;
+}
+
 .x-axis {
     width: 75%;
     display: flex;
@@ -71,16 +99,13 @@ main {
     margin-bottom: 10px;
 }
 
-/* .bar {
-    background-color: blue;
-} */
 
 .btn-wrapper {
     width: 75%;
     display: flex;
 }
 
-#refetchBtn {
+#refetch-btn {
     margin-top: 2.5vh;
     border-radius: 10px;
     padding: 5px;
@@ -89,7 +114,7 @@ main {
     color: white;
 }
 
-#refetchBtn:hover {
+#refetch-btn:hover {
     cursor: pointer;
     opacity: 0.75;
 }

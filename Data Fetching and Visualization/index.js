@@ -21,6 +21,18 @@ class Chart {
         return color;
     }
 
+    createBarLabel(freq) {
+        const label = document.createElement("div");
+        label.classList.add("bar-label");
+
+        const labelValue = document.createElement("p");
+        labelValue.textContent = `Frequency: ${freq}`;
+
+        label.append(labelValue);
+
+        return label;
+    }
+
     /**
      * Creates the bars for the chart
      * @returns {HTMLELement} - Container with bar elements
@@ -30,13 +42,20 @@ class Chart {
         barContainer.classList.add("bar-container");
     
         Object.values(this.occurrences).forEach(occ => {
+            const barWrapper = document.createElement("div");
+            barWrapper.classList.add("bar-wrapper");
+            barWrapper.style.width = this.width;
+
+            const label = this.createBarLabel(occ);
+
             const bar = document.createElement("div");
             bar.classList.add("bar");
-            bar.style.height = `${100 * (occ / this.maxFreq)}%`;
+            bar.style.minHeight = `${100 * (occ / this.maxFreq)}%`;
             bar.style.width = this.width;
             bar.style.backgroundColor = this.generateBarColor();
 
-            barContainer.append(bar);
+            barWrapper.append(label, bar);
+            barContainer.append(barWrapper);
         });
 
         return barContainer;
@@ -151,7 +170,7 @@ const main = async () => {
     const charts = new Chart();
     charts.fetchNumbers();
 
-    const refetchBtn = document.getElementById("refetchBtn");
+    const refetchBtn = document.getElementById("refetch-btn");
 
     refetchBtn.addEventListener("click", () => {
         charts.fetchNumbers();
