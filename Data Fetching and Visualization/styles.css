@@ -14,8 +14,21 @@
     align-items: center;
 }
 
-.chart {
+main {
     width: 95vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#chart-wrapper {
+    width: 100%;
+    transform: translate(-2.5%);
+}
+
+.chart {
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
@@ -61,3 +74,22 @@
 /* .bar {
     background-color: blue;
 } */
+
+.btn-wrapper {
+    width: 75%;
+    display: flex;
+}
+
+#refetchBtn {
+    margin-top: 2.5vh;
+    border-radius: 10px;
+    padding: 5px;
+    font-size:1.05em;
+    background-color: blue;
+    color: white;
+}
+
+#refetchBtn:hover {
+    cursor: pointer;
+    opacity: 0.75;
+}

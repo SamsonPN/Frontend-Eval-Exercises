@@ -1,10 +1,10 @@
 class Chart {
-    constructor(occ, maxNum) {
-        this.occurrences = occ;
-        this.maxNum = maxNum;
-        this.maxFreq = Math.max(...Object.values(occ));
+    constructor() {
+        this.occurrences = {};
+        this.maxNum = null;
+        this.maxFreq = null;
         this.maxHeight = 100;
-        this.width = `${Math.floor( (document.body.clientWidth / 2) / (Object.keys(occ).length))}px`;
+        this.width = "0px";
     }
 
     /**
@@ -109,29 +109,53 @@ class Chart {
 
         chart.append(chartContainer, xAxis);
 
-        document.getElementById("app").append(chart);
+        const chartWrapper = document.getElementById("chart-wrapper");
+        if (chartWrapper.children.length > 0) {
+            chartWrapper.removeChild(chartWrapper.children[0]);
+        }
+        chartWrapper.append(chart);
+    }
+
+    /**
+     * Fetches random numbers and organizes them into readable data for the chart
+     * 
+     */
+    async fetchNumbers(){
+        const endpoint = "https://www.random.org/integers/?num=200&min=1&max=10&col=1&base=10&format=plain&rnd=new";
+
+        const fetchData = await fetch(endpoint);
+        const data = (await fetchData.text()).split('\n');
+        let occurrences = {};
+        data.forEach(num => {
+            if (num !== "") {
+                if (num !== "" && occurrences[num] === undefined) occurrences[num] = 0;
+                occurrences[num]++;
+            }
+        })
+
+        this.occurrences = occurrences;
+        this.max = Number(endpoint.split("max=")[1].split("&")[0]);
+        this.maxFreq = (Object.values(occurrences));
+        this.maxFreq = Math.max(...Object.values(occurrences));
+        this.width = `${Math.floor((document.body.clientWidth / 2) / (Object.keys(occurrences).length))}px`;
+
+        this.createChart();
     }
 }
+
 
 /**
  * Fetches data and creates the chart
  */
 const main = async () => {
-    const endpoint = "https://www.random.org/integers/?num=200&min=1&max=10&col=1&base=10&format=plain&rnd=new";
+    const charts = new Chart();
+    charts.fetchNumbers();
 
-    const fetchData = await fetch(endpoint);
-    const data = (await fetchData.text()).split('\n');
-    let occurrences = {};
-    data.forEach(num => {
-        if (num !== "") {
-            if (num !== "" && occurrences[num] === undefined) occurrences[num] = 0;
-            occurrences[num]++;
-        }
+    const refetchBtn = document.getElementById("refetchBtn");
+
+    refetchBtn.addEventListener("click", () => {
+        charts.fetchNumbers();
     })
-
-    const max = Number(endpoint.split("max=")[1].split("&")[0]);
-    const charts = new Chart(occurrences, max);
-    charts.createChart();
 }
 
 main();
