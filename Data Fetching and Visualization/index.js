@@ -1,7 +1,9 @@
 class Chart {
     constructor() {
         this.occurrences = {};
-        this.maxNum = null;
+        this.totalNum = 200;
+        this.minNum = 1;
+        this.maxNum = 10;
         this.maxFreq = null;
         this.maxHeight = 100;
         this.width = "0px";
@@ -21,12 +23,12 @@ class Chart {
         return color;
     }
 
-    createBarLabel(freq) {
+    createBarLabel(num, freq) {
         const label = document.createElement("div");
         label.classList.add("bar-label");
 
         const labelValue = document.createElement("p");
-        labelValue.textContent = `Frequency: ${freq}`;
+        labelValue.textContent = `Number: ${num}\nFrequency: ${freq}`;
 
         label.append(labelValue);
 
@@ -40,23 +42,24 @@ class Chart {
     createBars() {
         const barContainer = document.createElement("div");
         barContainer.classList.add("bar-container");
-    
-        Object.values(this.occurrences).forEach(occ => {
+        
+        for (let num in this.occurrences) {
+            let occ = this.occurrences[num];
             const barWrapper = document.createElement("div");
             barWrapper.classList.add("bar-wrapper");
             barWrapper.style.width = this.width;
-
-            const label = this.createBarLabel(occ);
-
+    
+            const label = this.createBarLabel(num, occ);
+    
             const bar = document.createElement("div");
             bar.classList.add("bar");
             bar.style.minHeight = `${100 * (occ / this.maxFreq)}%`;
             bar.style.width = this.width;
             bar.style.backgroundColor = this.generateBarColor();
-
+    
             barWrapper.append(label, bar);
             barContainer.append(barWrapper);
-        });
+        }
 
         return barContainer;
     }
@@ -70,7 +73,13 @@ class Chart {
         
         let axes = [];
         if (this.maxNum > 30) {
-            const offset = Math.floor(this.maxNum / 10);
+            let offset = Math.floor(this.maxNum / 100) * 10;
+            if (offset <= 10) {
+                offset = (10 - offset) + offset;
+            }
+            else if (offset < 100) {
+                offset = (100 - offset) + offset;
+            }
             for (let i = 0; i < this.maxNum + offset; i += offset) {
                 axes.push(i);
             }
@@ -140,7 +149,8 @@ class Chart {
      * 
      */
     async fetchNumbers(){
-        const endpoint = "https://www.random.org/integers/?num=200&min=1&max=10&col=1&base=10&format=plain&rnd=new";
+        const {totalNum, minNum, maxNum} = this;
+        const endpoint = `https://www.random.org/integers/?num=${totalNum}&min=${minNum}&max=${maxNum}&col=1&base=10&format=plain&rnd=new`;
 
         const fetchData = await fetch(endpoint);
         const data = (await fetchData.text()).split('\n');
@@ -153,10 +163,8 @@ class Chart {
         })
 
         this.occurrences = occurrences;
-        this.max = Number(endpoint.split("max=")[1].split("&")[0]);
-        this.maxFreq = (Object.values(occurrences));
         this.maxFreq = Math.max(...Object.values(occurrences));
-        this.width = `${Math.floor((document.body.clientWidth / 2) / (Object.keys(occurrences).length))}px`;
+        this.width = `${((document.body.clientWidth / 2) / (Object.keys(occurrences).length))}px`;
 
         this.createChart();
     }
@@ -170,8 +178,28 @@ const main = async () => {
     const charts = new Chart();
     charts.fetchNumbers();
 
-    const refetchBtn = document.getElementById("refetch-btn");
+    const totalNum = document.getElementById("dataset-form-num");
+    const min = document.getElementById("dataset-form-min");
+    const max = document.getElementById("dataset-form-max");
+    [totalNum, min, max].forEach(el => {
+        el.addEventListener("input", () => {
+            let {name, value} = el;
+            value = Number(value);
+            switch(name) {
+                case "num":
+                    charts.totalNum = value;
+                    break;
+                case "min":
+                    charts.minNum = value;
+                    break;
+                case "max":
+                    charts.maxNum = value;
+                    break;
+            }
+        })
+    })
 
+    const refetchBtn = document.getElementById("refetch-btn");
     refetchBtn.addEventListener("click", () => {
         charts.fetchNumbers();
     })

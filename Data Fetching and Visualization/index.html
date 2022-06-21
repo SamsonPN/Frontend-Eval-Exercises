@@ -11,6 +11,15 @@
     <div id="app">
         <main>
             <div id="chart-wrapper"></div>
+            <h2>Dataset Options</h2>
+            <form id="dataset-form">
+                <label for="num">Total Numbers:</label>
+                <input id="dataset-form-num" type="text" name="num" maxlength="4">
+                <label for="min">Minimum Value:</label>
+                <input id="dataset-form-min" type="text" name="min" maxlength="4">
+                <label for="max">Maximum Value:</label>
+                <input id="dataset-form-max" type="text" name="max" maxlength="4">
+            </form>
             <div class="btn-wrapper">
                 <button id="refetch-btn">Generate New Data</button>
             </div>

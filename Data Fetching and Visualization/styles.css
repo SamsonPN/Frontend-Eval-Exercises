@@ -3,7 +3,13 @@
     padding: 0;
     border: 0;
     box-sizing: border-box;
-    font-family:Arial, Helvetica, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+input {
+    resize: none;
+    font-family: inherit;
+    font-size: inherit;
 }
 
 #app {
@@ -34,6 +40,7 @@ main {
     flex-direction: column;
     align-items: flex-end;
     transform: translate(-10%);
+    margin-bottom: 2vh;
 }
 
 .chart-container {
@@ -53,22 +60,11 @@ main {
 }
 
 .bar-wrapper {
-    position: relative;
     height: 100%;
     min-height: 100%;
     display:flex;
     flex-direction: column;
     justify-content: flex-end;
-}
-
-.bar-label {
-    display: none;
-    margin-bottom: 1vh;
-    padding: 5px;
-    font-size: 0.75em;
-    background-color: black;
-    color: white;
-    opacity: 0.9;
 }
 
 .bar-wrapper:hover {
@@ -78,6 +74,20 @@ main {
 .bar-wrapper:hover > .bar-label {
     display: block;
 }
+
+.bar-label {
+    position: relative;
+    top: 0.1px;
+    min-width: min-content;
+    display: none;
+    margin-bottom: 1vh;
+    padding: 5px;
+    font-size: 0.75em;
+    background-color: black;
+    color: white;
+    opacity: 0.9;
+}
+
 
 .x-axis {
     width: 75%;
@@ -97,6 +107,22 @@ main {
 
 .y-axis-value {
     margin-bottom: 10px;
+}
+
+h2 {
+    margin-bottom: 1vh;
+}
+
+#dataset-form {
+    width: 75%;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1vh;
+}
+
+#dataset-form input {
+    width: 10vw;
+    border: 1px solid black;
 }
 
 
