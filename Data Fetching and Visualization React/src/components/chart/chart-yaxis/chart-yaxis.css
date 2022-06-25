@@ -1,0 +1,12 @@
+.y-axis {
+    height: inherit;
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: space-between;
+    margin-right: 1vw;
+}
+
+.y-axis-value {
+    margin-bottom: 10px;
+    text-align: center;
+}

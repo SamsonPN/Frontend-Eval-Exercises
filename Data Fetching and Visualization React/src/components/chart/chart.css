@@ -1,0 +1,14 @@
+.chart {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    transform: translate(-10%);
+    margin-bottom: 2vh;
+}
+
+.chart-container {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}

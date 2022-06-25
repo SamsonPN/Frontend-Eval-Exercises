@@ -1,0 +1,12 @@
+.x-axis {
+    width: 75%;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1vw;
+    padding: 1vw;
+}
+
+.x-axis-value {
+    width: var(--chart-bar-width);
+    text-align: center;
+}

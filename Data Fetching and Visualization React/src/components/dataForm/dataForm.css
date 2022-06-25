@@ -1,0 +1,11 @@
+#dataset-form {
+    width: 75%;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1vh;
+}
+
+#dataset-form input {
+    width: 10vw;
+    border: 1px solid black;
+}
